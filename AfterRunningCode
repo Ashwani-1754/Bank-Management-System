@@ -1,0 +1,58 @@
+Simple Command-Line Banking System in CA console-based application written in C that simulates basic banking operations, including account creation, login, deposits, withdrawals, PIN changes, and transaction history, with data persistence to a local file.This project is a practical example of using fundamental C programming concepts such as structures, arrays, file I/O, and functions to create a functional application.DEMO OUTPUT:-===== WELCOME TO THE ATM =====
+1. Login to Existing Account
+2. Create New Account
+3. Exit
+===============================
+Enter your choice: 2
+
+--- Create New Account ---
+Enter a new 4-digit PIN: 1234
+
+Account Created Successfully!
+Your new 12-digit Account Number is: 584038162948
+Please log in to use your new account.
+
+===== WELCOME TO THE ATM =====
+1. Login to Existing Account
+2. Create New Account
+3. Exit
+===============================
+Enter your choice: 1
+
+--- Login ---
+Enter your 12-digit Account Number: 584038162948
+Enter your 4-digit PIN: 1234
+
+Login Successful!
+
+--- Transaction Menu ---
+Account Number: 584038162948
+------------------------
+1. Deposit
+2. Cash Withdrawal
+3. Fast Cash
+4. Mini Statement
+5. PIN Change
+6. Balance Enquiry
+7. Logout
+Enter your choice: 1
+Enter amount to deposit: 5000
+Rs. 5000.00 deposited successfully. New balance is Rs. 5000.00
+
+--- Transaction Menu ---
+Account Number: 584038162948
+------------------------
+...
+Enter your choice: 4
+
+--- Mini Statement for Account 584038162948 ---
+----------------------------------------------------
+Date                      Type            Amount
+----------------------------------------------------
+2023-10-27 14:30:15       Deposit         5000.00
+----------------------------------------------------
+Current Balance: Rs. 5000.00
+FeaturesAccount Management: The system can manage multiple user accounts (up to 10 by default), allowing users to create a new account or log in to an existing one. Account numbers are randomly generated as 12-digit values.Full Transactions: Perform a complete set of banking operations:Deposit & Withdraw: Perform basic credit and debit transactions.Fast Cash: Quickly withdraw predefined common amounts.PIN Change: Securely update the account PIN after verification.Balance Enquiry: Check the current account balance at any time.Mini Statement: View the recent transaction history for any account (up to the last 5 transactions), including the type, amount, and timestamp.Data Persistence: All account data and transaction history are saved to a binary file (accounts.txt) and automatically loaded when the program starts. Data is saved upon logout or exiting the application.Error Handling: Includes basic checks for invalid user input, non-existent accounts, incorrect PINs, and insufficient funds.Struct-based Design: Uses structs to cleanly organize Account and Transaction data, making the code modular and easy to understand.How It WorksData StructuresThe program is built around two main structs:Transaction: Holds the type (e.g., "Deposit"), amount, and date of a single transaction.Account: Contains the 12-digit accountNumber, pin, current balance, and an array of Transaction structures to store the history.Data PersistenceWhen the user logs out or exits the application, the program calls the save_accounts_to_file() function. This function writes the current state of all accounts from the global accounts array into a binary file named accounts.txt.When the program starts, the load_accounts_from_file() function is called. It checks if accounts.txt exists.If it exists, it reads the data from the file into memory, restoring all accounts and their histories.If it doesn't exist, it initializes the system with no accounts, ready for new ones to be created.Getting StartedTo compile and run this project on your local machine, you will need a C compiler like GCC.PrerequisitesA C compiler (GCC is recommended). You can install it on Linux with sudo apt-get install gcc or on Windows using MinGW.Compilation & ExecutionSave the Code: Save the code into a file named main.c.Open your terminal or command prompt and navigate to the directory where you saved the file.Compile the code using the following command:gcc main.c -o atm_app
+This command compiles the C source file and creates an executable file named atm_app.Run the executable:On Linux/macOS:./atm_app
+On Windows:.\atm_app.exe
+The program will start, load or create the accounts.txt data file, and display the main menu for you to interact with.
