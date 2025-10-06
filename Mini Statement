@@ -16,12 +16,12 @@ typedef struct {
 
 // Structure to hold a user's account information
 typedef struct {
-    int accountNumber;
+    long long accountNumber; // Using long long to hold 12 digits
     char pin[5];
     double balance;
     Transaction history[MAX_TRANSACTIONS];
-    int transaction_count; // How many transactions are in the history
-    int next_transaction_index; // Where to store the next transaction (for circular array)
+    int transaction_count;
+    int next_transaction_index;
 } Account;
 
 // Global array to hold all bank accounts in memory
@@ -35,9 +35,9 @@ void add_transaction(Account* acc, const char* type, double amount);
 void show_mini_statement(const Account* acc);
 void handle_deposit(Account* acc);
 void handle_withdrawal(Account* acc);
-void handle_fast_cash(Account* acc);      // <-- ADDED
-void handle_pin_change(Account* acc);     // <-- ADDED
-void handle_balance_enquiry(const Account* acc); // <-- ADDED
+void handle_fast_cash(Account* acc);
+void handle_pin_change(Account* acc);
+void handle_balance_enquiry(const Account* acc);
 void show_transaction_menu(Account* acc);
 void handle_login();
 void handle_create_account();
@@ -73,7 +73,6 @@ int main() {
                 break;
             case 3:
                 printf("Thank you for using the ATM. Goodbye!\n");
-                // Save all data before exiting
                 save_accounts_to_file();
                 exit(0);
             default:
@@ -89,7 +88,7 @@ void show_transaction_menu(Account* acc) {
     int choice;
     while (1) {
         printf("\n--- Transaction Menu ---\n");
-        printf("Account Number: %d\n", acc->accountNumber);
+        printf("Account Number: %lld\n", acc->accountNumber);
         printf("------------------------\n");
         printf("1. Deposit\n");
         printf("2. Cash Withdrawal\n");
@@ -137,13 +136,13 @@ void show_transaction_menu(Account* acc) {
 }
 
 void handle_login() {
-    int acc_num;
+    long long acc_num;
     char pin_num[5];
     Account* found_account = NULL;
 
     printf("\n--- Login ---\n");
-    printf("Enter your Account Number: ");
-    scanf("%d", &acc_num);
+    printf("Enter your 12-digit Account Number: ");
+    scanf("%lld", &acc_num);
     clear_input_buffer();
 
     printf("Enter your 4-digit PIN: ");
@@ -174,7 +173,12 @@ void handle_create_account() {
     Account* new_acc = &accounts[num_accounts];
     srand(time(NULL));
     
-    new_acc->accountNumber = 1000 + rand() % 9000;
+    // Logic to generate a random 12-digit number
+    long long r1 = rand();
+    long long r2 = rand();
+    long long r3 = rand();
+    long long large_random = (r1 << 30) | (r2 << 15) | r3;
+    new_acc->accountNumber = 100000000000LL + (large_random % 900000000000LL);
     
     printf("\n--- Create New Account ---\n");
     printf("Enter a new 4-digit PIN: ");
@@ -190,7 +194,7 @@ void handle_create_account() {
     save_accounts_to_file();
 
     printf("\nAccount Created Successfully!\n");
-    printf("Your new Account Number is: %d\n", new_acc->accountNumber);
+    printf("Your new 12-digit Account Number is: %lld\n", new_acc->accountNumber);
     printf("Please log in to use your new account.\n");
 }
 
@@ -291,7 +295,7 @@ void handle_balance_enquiry(const Account* acc) {
 }
 
 void show_mini_statement(const Account* acc) {
-    printf("\n--- Mini Statement for Account %d ---\n", acc->accountNumber);
+    printf("\n--- Mini Statement for Account %lld ---\n", acc->accountNumber);
     if (acc->transaction_count == 0) {
         printf("No transactions yet.\n");
     } else {
@@ -357,4 +361,5 @@ void clear_input_buffer() {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+
 
